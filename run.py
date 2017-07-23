@@ -79,4 +79,4 @@ if __name__ == '__main__':
         stu_asgn_item.grade = item[6]
         STU_ASGN_LIST.append(stu_asgn_item)
 
-    
+
