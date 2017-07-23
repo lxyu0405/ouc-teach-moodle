@@ -45,7 +45,7 @@ def timing(f):
         return ret
     return wrap
 
-
+PLAG_THRESHOLD = 0.7
 STU_ASGN_LIST = []
 REF1_SENTS = []
 REF2_SENTS = []
@@ -147,22 +147,36 @@ if __name__ == '__main__':
         csv_report_item.name = stu_asgn.last_name + stu_asgn.first_name
         csv_report_item.title = stu_asgn.title
         csv_report_item.peer_grade = stu_asgn.grade
+        csv_report_item.plag_cnt = 0
 
         print(u"Analyzing student: " + csv_report_item.name)
         # remove reference (title) sentence in student assignment
         STU_SENTS = stu_sents_from_content(stu_asgn.content)
+        csv_report_item.sents_cnt = len(STU_SENTS)
 
         # calculate plag report
         STU_PLAG_LIST = stu_plag_report(STU_SENTS, REF1_SENTS, REF2_SENTS)
 
+
+        for stu_plag_item in STU_PLAG_LIST:
+            if stu_plag_item.similarity1 > PLAG_THRESHOLD or stu_plag_item.similarity2 > PLAG_THRESHOLD:
+                csv_report_item.plag_cnt += 1
+        csv_report_item.plag_cent = float(csv_report_item.plag_cnt) / float(csv_report_item.sents_cnt)
+        REPORT_LIST.append(csv_report_item)
+
         with open(SLN_DIR + 'reports/' + csv_report_item.name + '--分析报告.csv', 'wb') as f:
             writer = csv.writer(f, delimiter = ',')
-            writer.writerow(['学生句子', '参考文献1中句子', '相似度1', '参考文献2中句子', '相似度2'])
+            writer.writerow([u'学生句子', u'参考文献1中句子', u'相似度1', u'参考文献2中句子', u'相似度2'])
             for stu_plag_item in STU_PLAG_LIST:
                 writer.writerow([(stu_plag_item.stu_sent).encode('utf-8'), (stu_plag_item.ref1_sent).encode('utf-8'), stu_plag_item.similarity1, (stu_plag_item.ref2_sent).encode('utf-8'), stu_plag_item.similarity2])
         f.close()
-        
 
+    with open(SLN_DIR + 'reports/' + '总体--分析报告.csv', 'wb') as f:
+        writer = csv.writer(f, delimiter = ',')
+        writer.writerow([u'学生姓名', u'作业名称', u'作业句子数量', u'可疑抄袭句子数量', u'抄袭率', u'互评成绩'])
+        for report_item in REPORT_LIST:
+            writer.writerow([(report_item.name).encode('utf-8'), (report_item.title).encode('utf-8'), report_item.sents_cnt, report_item.plag_cnt, report_item.plag_cent, report_item.peer_grade])
+    f.close()
 
 
 
