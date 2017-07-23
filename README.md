@@ -8,6 +8,10 @@
 ### model/
   - stu_plag.py -- 存储抄袭比对结果
   - stu_asgn_info.py -- 存储数据库中学生作业信息
+  - csv_report_struct.py -- CSV总体报告项
+
+### reports/
+  > 课程作业分析结果
 
 ### resources/
   > 资源
