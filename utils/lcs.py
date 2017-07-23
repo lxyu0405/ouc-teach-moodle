@@ -6,22 +6,20 @@ import csv
 class PlagDetect(object):
     @staticmethod
     def cut_sentence(words):
-        words = words.decode('utf8')
+        words = (words).decode('utf8') #如果是从编码为 utf8 的 txt 文本中直接输入的话，需要先把文本解码成 unicode 来处理
         start = 0
-        i = 0
+        i = 0  #记录每个字符的位置
         sents = []
-
-        punt_list = ',.!?;~，。！？；～'.decode('utf8')
+        punt_list = ',.!?:;~，。！？：；～'.decode('utf8')  #string 必须要解码为 unicode 才能进行匹配
         for word in words:
-            if word in punt_list and token not in punt_list: #检查标点符号下一个字符是否还是标点
+            if word in punt_list:
                 sents.append(words[start:i+1])
-                start = i+1
+                start = i + 1  #start标记到下一句的开头
                 i += 1
             else:
-                i += 1
-                token = list(words[start:i+2]).pop() # 取下一个字符
+                i += 1  #若不是标点符号，则字符位置继续前移
         if start < len(words):
-            sents.append(words[start:])
+            sents.append(words[start:])  #这是为了处理文本末尾没有标点符号的情况
         return sents
 
     @staticmethod
@@ -56,4 +54,26 @@ class PlagDetect(object):
 
         return recon(n, m)
 
+    @staticmethod
+    def rmmlsslst(lst): #remove meaningless word in list
+        lcs_list = []
+        stop_words = [u'的', u'了']
+        for word in lst:
+            if word in ',.!?;~，。！？；～'.decode('utf8'):
+                continue
+            if word in stop_words:
+                continue
+            lcs_list.append(word)
+        return lcs_list
 
+    @staticmethod
+    def rmmlssstr(str): #remove meaningless word in str
+        res_str = ""
+        stop_words = [u'的', u'了']
+        for word in str:
+            if word in ',.!?;~，。！？；～'.decode('utf8'):
+                continue
+            if word in stop_words:
+                continue
+            res_str += word
+        return res_str
