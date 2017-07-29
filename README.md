@@ -20,3 +20,13 @@
   - char_tools.py -- 字符串处理工具类
   - lcs.py -- 抄袭比对算法工具类
 
+## 部署过程
+
+#### ubuntu install pip
+  > sudo apt-get install python-pip
+#### 安装python虚拟环境
+  * 
+  > pip install virtualenv
+
+> /ouc-virtualenv/bin/pippip install ConfigParser sqlalchemy sqlacodegen 
+> /ouc-virtualenv/bin/pip install mysql-connector==2.1.4

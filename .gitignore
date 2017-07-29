@@ -1,0 +1,4 @@
+.idea/*
+*.pyc
+model/*.pyc
+utils/*.pyc
