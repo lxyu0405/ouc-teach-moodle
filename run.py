@@ -11,7 +11,7 @@ from utils import char_tools, lcs
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
+# 读取配置文件中的配置
 CONFIG = ConfigParser.ConfigParser()
 # config file path
 CONFIG.read('config.conf')
@@ -32,6 +32,7 @@ REF2_TITLE = CONFIG.get('references', 'ref2_title')
 REF2_DIR = CONFIG.get('references', 'ref2_dir')
 
 
+# 计算函数执行时间
 def timing(f):
     def wrap(*args):
         time1 = time.time()
@@ -41,13 +42,27 @@ def timing(f):
         return ret
     return wrap
 
+# 全局变量：裁定抄袭阈值
 PLAG_THRESHOLD = 0.7
+
+# 学生作业信息列表
 STU_ASGN_LIST = []
+
+# 参考文献1中的句子
 REF1_SENTS = []
+
+# 参考文献2中的句子
 REF2_SENTS = []
+
+# 参考文献的标题
+# 用于去除引用的影响
 REF_TITLE = []
+
+# 整理成报告列表
 REPORT_LIST = []
 
+
+# 整理参考文献数据
 @timing
 def prepare_ref_data():
     # prepare sentences data for ref1
@@ -68,6 +83,7 @@ def prepare_ref_data():
     for sent in lcs.PlagDetect.cut_sentence(REF2_TITLE):
         REF_TITLE.append(sent)
 
+# 从db中读取学生作业详情
 @timing
 def stu_assgn_data_from_db(db_list):
     for item in db_list:
@@ -86,6 +102,7 @@ def stu_assgn_data_from_db(db_list):
         stu_asgn_item.grade = item[7]
         STU_ASGN_LIST.append(stu_asgn_item)
 
+# 学生作业文本切割成句子
 @timing
 def stu_sents_from_content(str_content):
     stu_sent_list = []
@@ -97,7 +114,7 @@ def stu_sents_from_content(str_content):
                 break
     return stu_sent_list
 
-
+# 整理成报告形式
 @timing
 def stu_plag_report(author_id, stu_sents, ref1_sents, ref2_sents):
     stu_plag_list = []

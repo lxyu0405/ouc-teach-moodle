@@ -4,6 +4,8 @@ import csv
 
 
 class PlagDetect(object):
+
+    # 通过标点切割文本
     @staticmethod
     def cut_sentence(words):
         words = (words).decode('utf8') #如果是从编码为 utf8 的 txt 文本中直接输入的话，需要先把文本解码成 unicode 来处理
@@ -22,6 +24,8 @@ class PlagDetect(object):
             sents.append(words[start:])  #这是为了处理文本末尾没有标点符号的情况
         return sents
 
+    # 计算两个句子的最长子序列内容和长度
+    # 使用动态规划方法优化
     @staticmethod
     def lcs(x, y):
         n = len(x)
@@ -54,6 +58,8 @@ class PlagDetect(object):
 
         return recon(n, m)
 
+    # 去除中文句子中无意义的介词、语气词
+    # 该词典有目的的填充可影响分析结果
     @staticmethod
     def rmmlsslst(lst): #remove meaningless word in list
         lcs_list = []
@@ -66,6 +72,8 @@ class PlagDetect(object):
             lcs_list.append(word)
         return lcs_list
 
+    # 去除中文句子中无意义的介词、语气词
+    # 该词典有目的的填充可影响分析结果
     @staticmethod
     def rmmlssstr(str): #remove meaningless word in str
         res_str = ""
