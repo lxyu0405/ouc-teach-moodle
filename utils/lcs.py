@@ -77,7 +77,7 @@ class PlagDetect(object):
     @staticmethod
     def rmmlssstr(str): #remove meaningless word in str
         res_str = ""
-        stop_words = [u'的', u'了']
+        stop_words = []
         for word in str:
             if word in ',.!?;~，。！？；～'.decode('utf8'):
                 continue

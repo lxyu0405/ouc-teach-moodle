@@ -126,12 +126,12 @@ def stu_plag_report(author_id, stu_sents, ref1_sents, ref2_sents):
         cnt += 1
         stu_plag.sentence_content = sent
         for ref1_sent in ref1_sents:
-            similarity = len(lcs.PlagDetect.rmmlsslst(lcs.PlagDetect.lcs(sent, ref1_sent))) / float(len(sent))
+            similarity = len(lcs.PlagDetect.rmmlsslst(lcs.PlagDetect.lcs(sent, ref1_sent))) / float(len(lcs.PlagDetect.rmmlsslst(sent)))
             if similarity > stu_plag.ref1_similarity:
                 stu_plag.ref1_similarity = similarity
                 stu_plag.ref1_content = ref1_sent
         for ref2_sent in ref2_sents:
-            similarity = len(lcs.PlagDetect.rmmlsslst(lcs.PlagDetect.lcs(sent, ref2_sent))) / float(len(sent))
+            similarity = len(lcs.PlagDetect.rmmlsslst(lcs.PlagDetect.lcs(sent, ref2_sent))) / float(len(lcs.PlagDetect.rmmlsslst(sent)))
             if similarity > stu_plag.ref2_similarity:
                 stu_plag.ref2_similarity = similarity
                 stu_plag.ref2_content = ref2_sent
